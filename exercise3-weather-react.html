@@ -1,0 +1,57 @@
+<!-- Fetch astronomy picture of the day from NASA API -->
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>React getting started</title>
+    <style>
+      .center {
+      margin: auto; width: 60%; border: 3px solid blue; padding: 10px; text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Root container for react components -->
+    <div id='root'></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+      class RestWeather extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {temperature: '', weather: '', imgurl: ''};
+        }
+        componentDidMount() {
+          fetch('http://api.openweathermap.org/data/2.5/weather?q=Helsinki,FI&units=metric&APPID=d013c8b75d3d9cce44384ea98d7889b0')
+
+          .then((response) => response.json())
+          .then((responseData) => {
+             console.log(responseData);
+              this.setState({
+                temprature: responseData.main.temp,
+                weather: responseData.weather[0].main,
+                imgurl: "http://openweathermap.org/img/w/" + responseData.weather[0].icon + ".png"
+              });
+          });
+        }
+
+        render() {
+          return (
+            <div className = "center">
+              <div><h1>Current weather in Helsinki</h1></div>
+              <div>{this.state.temprature}</div>
+              <div>{this.state.weather}</div>
+              <div><img src={this.state.imgurl} /></div>
+
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.render(<RestWeather />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
