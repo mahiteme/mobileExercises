@@ -22,7 +22,7 @@
       class RestWeather extends React.Component {
         constructor(props) {
           super(props);
-          this.state = {temperature: '', weather: '', imgurl: ''};
+          this.state = {city: '', country: '', temperature: '', weather: '', imgurl: ''};
         }
         componentDidMount() {
           fetch('http://api.openweathermap.org/data/2.5/weather?q=Helsinki,FI&units=metric&APPID=d013c8b75d3d9cce44384ea98d7889b0')
@@ -31,6 +31,8 @@
           .then((responseData) => {
              console.log(responseData);
               this.setState({
+                city: responseData.name,
+                country: responseData.sys.country,
                 temprature: responseData.main.temp,
                 weather: responseData.weather[0].main,
                 imgurl: "http://openweathermap.org/img/w/" + responseData.weather[0].icon + ".png"
@@ -41,7 +43,8 @@
         render() {
           return (
             <div className = "center">
-              <div><h1>Current weather in Helsinki</h1></div>
+              <div><h1>Current weather</h1></div>
+              <div>{this.state.city}, {this.state.country}<hr/></div>
               <div>{this.state.temprature}</div>
               <div>{this.state.weather}</div>
               <div><img src={this.state.imgurl} /></div>
